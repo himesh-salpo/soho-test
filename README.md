@@ -16,7 +16,7 @@ Either clone this repository using git
 git clone https://github.com/sanity-io/example-frontend-next-js.git
 ```
 
-or [download the source code](https://github.com/sanity-io/example-frontend-next-js/archive/master.zip) as a zip archive.
+or [download the source code](https://github.com/himesh-salpo/soho-test/archive/main.zip) as a zip archive.
 
 Once that's one, open the terminal in the project directory, and install dependencies with:
 
