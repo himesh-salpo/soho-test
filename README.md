@@ -2,7 +2,7 @@
 
 Demo -> https://mystifying-kirch-03ce94.netlify.app
 
-A simple [Next.js](https://github.com/zeit/next.js/) powered frontend that consumes the [GitHub API](https://docs.github.com/en/rest) and lets users search by username.
+A simple [Next.js](https://github.com/zeit/next.js/) powered frontend that consumes the [GitHub API](https://docs.github.com/en/rest) and lets users search by username. [Bootstrap](https://getbootstrap.com/) has been used for styling.
 
 ## Prerequisites
 
