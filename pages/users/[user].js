@@ -6,20 +6,10 @@ import Pagination from '../../components/Pagination';
 import ReactJson from 'react-json-view';
 import Spinner from '../../components/Spinner';
 
-export async function getServerSideProps(context) {
-  try {
-    const res = await axios.get(`https://api.github.com/users/${context.params.user}`);
-    const user = res.data;
-    return { props: { user } };
-  } catch (err) {
-    console.log(err);
-    return { props: { user: {} } };
-  }
-}
-
-const User = ({ user }) => {
+const User = () => {
   const router = useRouter();
 
+  const [user, setUser] = useState({});
   const [followers, setFollowers] = useState([]);
   const [repos, setRepos] = useState([]);
   const [totalPagesFollowers, setTotalPagesFollowers] = useState([]);
@@ -30,6 +20,15 @@ const User = ({ user }) => {
   const [isLoadingRepos, setIsLoadingRepos] = useState(false);
 
   const PER_PAGE = 10;
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get(`https://api.github.com/users/${router.query.user}`);
+      setUser(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const fetchFollowers = async () => {
     setIsLoadingFollowers(true);
@@ -66,12 +65,17 @@ const User = ({ user }) => {
   }
 
   useEffect(() => {
+    fetchUser();
+    return () => {};
+  }, []);
+
+  useEffect(() => {
     if (Object.keys(user).length) {
       fetchFollowers();
       fetchRepos();
       return () => {};
     }
-  }, [currentPageFollowers, currentPageRepos]);
+  }, [user, currentPageFollowers, currentPageRepos]);
 
   const handleFollowersPagination = (page) => {
     setCurrentPageFollowers(page);
