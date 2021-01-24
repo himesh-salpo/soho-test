@@ -13,12 +13,12 @@ You will need [Node.js](https://nodejs.org) version 8.0 or greater installed on 
 Either clone this repository using git
 
 ```
-git clone https://github.com/sanity-io/example-frontend-next-js.git
+git clone https://github.com/himesh-salpo/soho-test.git
 ```
 
 or [download the source code](https://github.com/himesh-salpo/soho-test/archive/main.zip) as a zip archive.
 
-Once that's one, open the terminal in the project directory, and install dependencies with:
+Once that's done, open the terminal in the project directory, and install dependencies with:
 
 ```
 npm install
