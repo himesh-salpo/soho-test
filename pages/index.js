@@ -5,6 +5,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import Spinner from '../components/Spinner';
 import Pagination from '../components/Pagination';
+import { useRef } from 'react';
 
 const Home = () => {
   const [users, setUsers] = useState([]);
@@ -14,6 +15,16 @@ const Home = () => {
   const [error, setError] = useState(false);
 
   const PER_PAGE = 10;
+
+  const usePrevious = (value) => {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  }
+
+  const prevPage = usePrevious(currentPage);
 
   const fetchUsers = async () => {
     try {
@@ -39,7 +50,7 @@ const Home = () => {
       return () => {};
     }
 
-    if (users.length) {
+    if (currentPage > prevPage) {
       fetchUsers();
       return () => {};
     }
