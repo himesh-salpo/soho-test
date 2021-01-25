@@ -4,16 +4,28 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import Link from 'next/link';
 import Spinner from '../components/Spinner';
+import Pagination from '../components/Pagination';
 
 const Home = () => {
-  const [user, setUser] = useState({});
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [totalPages, setTotalPages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState(false);
 
-  const fetchUser = async () => {
+  const PER_PAGE = 10;
+
+  const fetchUsers = async () => {
     try {
-      const res = await axios.get(`https://api.github.com/users/${searchTerm}`);
-      setUser(res.data);
+      const res = await axios.get(`https://api.github.com/search/users?q=${encodeURIComponent(`${searchTerm} in:login`)}&per_page=${PER_PAGE}&page=${currentPage}`);
+      console.log(res.data);
+      const pageCount = Math.ceil(res.data.total_count / PER_PAGE);
+      const temp = [];
+      for (let i = 1; i <= pageCount; i++) {
+        temp.push(i);
+      }
+      setTotalPages(temp);
+      setUsers(res.data.items);
     } catch (err) {
       setError(true);
     }
@@ -23,29 +35,56 @@ const Home = () => {
     setError(false);
 
     if (searchTerm.length > 2) {
-      fetchUser();
+      fetchUsers();
       return () => {};
     }
-  }, [searchTerm]);
+
+    if (users.length) {
+      fetchUsers();
+      return () => {};
+    }
+  }, [searchTerm, users, currentPage]);
 
   const handleOnChange = (e) => {
-    setUser({});
+    setUsers([]);
     setSearchTerm(e.target.value);
   }
 
+  const handleUsersPagination = (page) => {
+    setCurrentPage(page);
+  }
+
+  const handleUsersPaginationNextClick = () => {
+    if (currentPage < totalPages.length) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
+
+  const handleUsersPaginationPrevClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }
+
   const renderUser = () => {
-    if (Object.keys(user).length) {
+    if (users.length) {
       return (
-        <div className="card" style={{ width: `${18}rem` }}>
-          <img className="card-img-top" src={user.avatar_url} alt="Card image cap" />
-          <div className="card-body">
-            <h5 className="card-title">{user.login}</h5>
-            <p className="card-text">{`Followers: ${user.followers}`}</p>
-            <p className="card-text">{`Following: ${user.following}`}</p>
-            <Link as={`/users/${user.login}`} href="/users/[user]">
-              <button className="btn btn-primary">View</button>
-            </Link>
-          </div>
+        <div>
+          <ul className="list-group mb-3">
+            {users.map(user => (
+              <Link as={`/users/${user.login}`} href="/users/[user]" key={user.id}>
+                <li className="list-group-item">{user.login}</li>
+              </Link>
+            ))}
+          </ul>
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            perPage={PER_PAGE}
+            handlePaginationPrevClick={handleUsersPaginationPrevClick}
+            handlePagination={handleUsersPagination}
+            handlePaginationNextClick={handleUsersPaginationNextClick}
+          />
         </div>
       );
     }
@@ -84,7 +123,7 @@ const Home = () => {
         </div>
         <div className="d-flex flex-column align-items-center">
           {renderUser()}
-          {searchTerm !== '' && !Object.keys(user).length && !error ? (
+          {searchTerm !== '' && !users.length && !error ? (
             <Spinner />
           ) : <></>}
         </div>
