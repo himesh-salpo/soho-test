@@ -83,22 +83,24 @@ const Home = () => {
   const renderUser = () => {
     if (users.length) {
       return (
-        <div>
-          <ul className="list-group mb-3">
-            {users.map(user => (
-              <Link as={`/users/${user.login}`} href="/users/[user]" key={user.id}>
-                <li className="list-group-item">{user.login}</li>
-              </Link>
-            ))}
-          </ul>
-          <Pagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            perPage={PER_PAGE}
-            handlePaginationPrevClick={handleUsersPaginationPrevClick}
-            handlePagination={handleUsersPagination}
-            handlePaginationNextClick={handleUsersPaginationNextClick}
-          />
+        <div className="row">
+          <div className="col-6">
+            <ul className="list-group mb-3">
+              {users.map(user => (
+                <Link as={`/users/${user.login}`} href="/users/[user]" key={user.id}>
+                  <li className="list-group-item" style={{ wordBreak: 'break-all' }}>{user.login}</li>
+                </Link>
+              ))}
+            </ul>
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              perPage={PER_PAGE}
+              handlePaginationPrevClick={handleUsersPaginationPrevClick}
+              handlePagination={handleUsersPagination}
+              handlePaginationNextClick={handleUsersPaginationNextClick}
+            />
+          </div>
         </div>
       );
     }
@@ -135,12 +137,10 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="d-flex flex-column align-items-center">
-          {renderUser()}
-          {searchTerm !== '' && !users.length && !error ? (
-            <Spinner />
-          ) : <></>}
-        </div>
+        {renderUser()}
+        {searchTerm !== '' && !users.length && !error ? (
+          <Spinner />
+        ) : <></>}
       </div>
     </div>
   )

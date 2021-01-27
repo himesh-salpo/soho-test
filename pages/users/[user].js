@@ -122,7 +122,7 @@ const User = () => {
         <div className="col-6" style={{ padding: 20 }}>
           <h2>Followers</h2>
           <ul className="list-group mb-3">
-            {followers.length && !isLoadingFollowers ? followers.map(follower => <li className="list-group-item" key={follower.id}>{follower.login}</li>) : <Spinner />}
+            {followers.length && !isLoadingFollowers ? followers.map(follower => <li className="list-group-item" style={{ wordBreak: 'break-all' }} key={follower.id}>{follower.login}</li>) : <Spinner />}
           </ul>
           <Pagination
             totalPages={totalPagesFollowers}
@@ -136,7 +136,7 @@ const User = () => {
         <div className="col-6" style={{ padding: 20 }}>
           <h2>Repos</h2>
           <ul className="list-group mb-3">
-            {repos.length && !isLoadingRepos ? repos.map(repo => <li className="list-group-item" key={repo.id}>{repo.name}</li>) : <Spinner />}
+            {repos.length && !isLoadingRepos ? repos.map(repo => <li className="list-group-item" style={{ wordBreak: 'break-all' }} key={repo.id}>{repo.name}</li>) : <Spinner />}
           </ul>
           <Pagination
             totalPages={totalPagesRepos}
