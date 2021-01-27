@@ -88,7 +88,9 @@ const Home = () => {
             <ul className="list-group mb-3">
               {users.map(user => (
                 <Link as={`/users/${user.login}`} href="/users/[user]" key={user.id}>
-                  <li className="list-group-item" style={{ wordBreak: 'break-all' }}>{user.login}</li>
+                  <li className="list-group-item" style={{ wordBreak: 'break-all' }}>
+                    <button className="btn btn-link">{user.login}</button>
+                  </li>
                 </Link>
               ))}
             </ul>
