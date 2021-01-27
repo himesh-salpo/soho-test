@@ -29,7 +29,6 @@ const Home = () => {
   const fetchUsers = async () => {
     try {
       const res = await axios.get(`https://api.github.com/search/users?q=${encodeURIComponent(`${searchTerm} in:login`)}&per_page=${PER_PAGE}&page=${currentPage}`);
-      console.log(res.data);
       const pageCount = Math.ceil(res.data.total_count / PER_PAGE);
       const temp = [];
       for (let i = 1; i <= pageCount; i++) {
@@ -49,12 +48,16 @@ const Home = () => {
       fetchUsers();
       return () => {};
     }
+  }, [searchTerm]);
+
+  useEffect(() => {
+    setError(false);
 
     if (currentPage > prevPage) {
       fetchUsers();
       return () => {};
     }
-  }, [searchTerm, users, currentPage]);
+  }, [currentPage]);
 
   const handleOnChange = (e) => {
     setUsers([]);
